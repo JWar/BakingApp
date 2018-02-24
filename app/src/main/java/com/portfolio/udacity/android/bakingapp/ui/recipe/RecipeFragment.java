@@ -5,19 +5,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import com.portfolio.udacity.android.bakingapp.R;
 import com.portfolio.udacity.android.bakingapp.data.model.Recipe;
 import com.portfolio.udacity.android.bakingapp.ui.list.ListHandlerCallback;
 import com.portfolio.udacity.android.bakingapp.ui.list.RecyclerViewAdapter;
-import com.portfolio.udacity.android.bakingapp.utils.Utils;
 
 import java.util.List;
 
@@ -27,9 +24,11 @@ import java.util.List;
 public class RecipeFragment extends Fragment implements RecipeContract.ViewRecipe {
     public static final String TAG = "recipeFragTag";
 
+    private static final String RECIPE_RV = "recipeRV";
+
     private RecipeContract.PresenterRecipe mPresenterRecipe;
 
-    private RecyclerView mRecyclerView;
+    private RecyclerView mRecipeRV;
 
     public RecipeFragment() {}
 
@@ -42,10 +41,10 @@ public class RecipeFragment extends Fragment implements RecipeContract.ViewRecip
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mRecyclerView = view.findViewById(R.id.fragment_recipe_recipes_rv);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(mRecyclerView.getContext(),
+        mRecipeRV = view.findViewById(R.id.fragment_recipe_recipes_rv);
+        mRecipeRV.setLayoutManager(new GridLayoutManager(mRecipeRV.getContext(),
                 getResources().getInteger(R.integer.grid_column_span)));
-        mRecyclerView.setAdapter(new RecyclerViewAdapter(new ListHandlerCallback() {
+        mRecipeRV.setAdapter(new RecyclerViewAdapter(new ListHandlerCallback() {
             @Override
             public void onListClick(int aPosition, String aId) {
                 mPresenterRecipe.onRecipeClick(Integer.parseInt(aId));
@@ -63,11 +62,37 @@ public class RecipeFragment extends Fragment implements RecipeContract.ViewRecip
 
     @Override
     public void setRecipes(List<Recipe> aRecipes) {
-        ((RecyclerViewAdapter)mRecyclerView.getAdapter()).swapRecipes(aRecipes);
+        ((RecyclerViewAdapter)mRecipeRV.getAdapter()).swapRecipes(aRecipes);
     }
 
     @Override
     public void setPresenter(RecipeContract.PresenterRecipe aPresenter) {
         mPresenterRecipe=aPresenter;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenterRecipe.getRecipes();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mPresenterRecipe.unSubscribe();
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState!=null) {
+            mRecipeRV.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(RECIPE_RV));
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(RECIPE_RV,mRecipeRV.getLayoutManager().onSaveInstanceState());
     }
 }

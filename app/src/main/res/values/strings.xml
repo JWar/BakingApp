@@ -4,6 +4,7 @@
     <string name="recipe_step_description_short">Short description</string>
 
     <string name="problem_finding_data">Problem finding data</string>
+    <string name="problem_setting_data">Problem setting data</string>
     <string name="problem_loading_screen">Problem loading screen</string>
 
     <!-- TODO: Remove or change this placeholder text -->
