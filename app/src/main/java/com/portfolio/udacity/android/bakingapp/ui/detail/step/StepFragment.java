@@ -1,7 +1,6 @@
-package com.portfolio.udacity.android.bakingapp.ui.step;
+package com.portfolio.udacity.android.bakingapp.ui.detail.step;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,18 +8,23 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.portfolio.udacity.android.bakingapp.R;
+import com.portfolio.udacity.android.bakingapp.data.model.Recipe;
 
 /**
  * This will contain media player and step instructions. And an up step and down step navigation.
  */
-public class StepFragment extends Fragment {
+public class StepFragment extends Fragment implements StepContract.ViewStep {
+    public static final String TAG = "stepFragTag";
     private static final String RECIPE_ID = "recipeId";
     private static final String STEP_ID = "stepId";
 
     private int mRecipeId;
     private int mStepId;
+
+    private StepContract.PresenterStep mPresenterStep;
 
     private StepFragmentListener mListener;
 
@@ -56,6 +60,21 @@ public class StepFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void problemFindingData() {
+        Toast.makeText(getActivity(), getString(R.string.problem_finding_data), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setRecipe(Recipe aRecipe) {
+
+    }
+
+    @Override
+    public void setPresenter(StepContract.PresenterStep aPresenter) {
+        mPresenterStep=aPresenter;
     }
 
     @Override

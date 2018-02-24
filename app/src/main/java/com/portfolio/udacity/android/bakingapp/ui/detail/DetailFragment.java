@@ -1,21 +1,23 @@
 package com.portfolio.udacity.android.bakingapp.ui.detail;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.portfolio.udacity.android.bakingapp.R;
+import com.portfolio.udacity.android.bakingapp.data.model.Recipe;
 
-public class DetailFragment extends Fragment {
+public class DetailFragment extends Fragment implements DetailContract.ViewDetail {
+    public static final String TAG = "detailFragTag";
     private static final String RECIPE_ID = "recipeId";
     private int mRecipeId;
 
-    private DetailFragmentListener mListener;
+    private DetailContract.PresenterDetail mPresenterDetail;
 
     public DetailFragment() {}
 
@@ -40,29 +42,27 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_detail, container, false);
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof DetailFragmentListener) {
-            mListener = (DetailFragmentListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement DetailFragmentListener");
-        }
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void problemFindingData() {
+        Toast.makeText(getActivity(), getString(R.string.problem_finding_data), Toast.LENGTH_SHORT).show();
     }
 
-    public interface DetailFragmentListener {
-        void onListClick(int aRecipeId, int aStepId);
+    @Override
+    public void setRecipe(Recipe aRecipe) {
+
+    }
+
+    @Override
+    public void setPresenter(DetailContract.PresenterDetail aPresenter) {
+        mPresenterDetail=aPresenter;
     }
 
     @Override

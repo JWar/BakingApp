@@ -9,10 +9,10 @@ import com.portfolio.udacity.android.bakingapp.R;
 import com.portfolio.udacity.android.bakingapp.data.model.Ingredient;
 import com.portfolio.udacity.android.bakingapp.data.model.Recipe;
 import com.portfolio.udacity.android.bakingapp.data.model.Step;
-import com.portfolio.udacity.android.bakingapp.ui.recipe.RecipeActivity;
 import com.portfolio.udacity.android.bakingapp.ui.list.holders.AbstractHolder;
 import com.portfolio.udacity.android.bakingapp.ui.list.holders.RecipeHolder;
 import com.portfolio.udacity.android.bakingapp.ui.list.holders.StepHolder;
+import com.portfolio.udacity.android.bakingapp.utils.Utils;
 
 import java.util.List;
 
@@ -52,7 +52,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<AbstractHolder> {
             case R.layout.list_item_step:
                 return new StepHolder(view);
             default:
-                RecipeActivity.logDebug("Error in ListRecyclerAdapter.onCreateViewHolder: listItemType unrecognised.");
+                Utils.logDebug("Error in ListRecyclerAdapter.onCreateViewHolder: listItemType unrecognised.");
                 return null;
         }
     }
@@ -79,12 +79,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<AbstractHolder> {
                             mListener.onListClick(holder.getAdapterPosition(), dataId);
                         }
                     } catch (Exception e) {
-                        RecipeActivity.logDebug("Error in onListListener: " + e.getMessage());
+                        Utils.logDebug("Error in onListListener: " + e.getMessage());
                     }
                 }
             });
         } catch (Exception e) {
-            RecipeActivity.logDebug("Error in ListRecyclerAdapter.onBindViewHolder: " + e.getMessage());
+            Utils.logDebug("Error in ListRecyclerAdapter.onBindViewHolder: " + e.getMessage());
         }
     }
     @Override
@@ -105,7 +105,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<AbstractHolder> {
                 return -1;
             }
         } catch (Exception e) {
-            RecipeActivity.logDebug("Error in ListRecyclerAdapter.getItemCount: " + e.getMessage());
+            Utils.logDebug("Error in ListRecyclerAdapter.getItemCount: " + e.getMessage());
             return -1;
         }
     }

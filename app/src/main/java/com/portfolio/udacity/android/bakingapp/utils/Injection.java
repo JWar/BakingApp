@@ -2,7 +2,9 @@ package com.portfolio.udacity.android.bakingapp.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.portfolio.udacity.android.bakingapp.data.repository.RecipeRepository;
 import com.portfolio.udacity.android.bakingapp.data.source.remote.BakingAppApi;
+import com.portfolio.udacity.android.bakingapp.data.source.remote.RecipeRemoteDataSource;
 import com.portfolio.udacity.android.bakingapp.utils.schedulers.BaseSchedulerProvider;
 import com.portfolio.udacity.android.bakingapp.utils.schedulers.SchedulerProvider;
 
@@ -16,6 +18,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class Injection {
+    public static RecipeRepository provideRecipeRepository(RecipeRemoteDataSource aRecipeRemoteDataSource) {
+        return RecipeRepository.getInstance(aRecipeRemoteDataSource);
+    }
+    public static RecipeRemoteDataSource provideRecipeRemoteDataSource(BakingAppApi aBakingAppApi) {
+        return RecipeRemoteDataSource.getInstance(aBakingAppApi);
+    }
     public static BaseSchedulerProvider provideSchedulerProvider() throws Exception {
         return SchedulerProvider.getInstance();
     }

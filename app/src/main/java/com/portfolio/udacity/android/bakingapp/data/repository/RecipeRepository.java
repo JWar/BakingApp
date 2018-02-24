@@ -42,4 +42,12 @@ public class RecipeRepository {
             return mRecipeRemoteDataSource.getRecipes();
         }
     }
+    public Recipe getRecipe(int aRecipeId) {
+        for (Recipe recipe: mRecipes) {
+            if (recipe.mId==aRecipeId) {
+                return recipe;
+            }
+        }
+        return null;
+    }
 }
