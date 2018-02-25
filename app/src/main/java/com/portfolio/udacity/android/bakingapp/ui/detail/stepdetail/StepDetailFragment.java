@@ -1,4 +1,4 @@
-package com.portfolio.udacity.android.bakingapp.ui.detail.step;
+package com.portfolio.udacity.android.bakingapp.ui.detail.stepdetail;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,7 +16,7 @@ import com.portfolio.udacity.android.bakingapp.data.model.Recipe;
 /**
  * This will contain media player and step instructions. And an up step and down step navigation.
  */
-public class StepFragment extends Fragment implements StepContract.ViewStep {
+public class StepDetailFragment extends Fragment implements StepDetailContract.ViewStep {
     public static final String TAG = "stepFragTag";
     private static final String RECIPE_ID = "recipeId";
     private static final String STEP_ID = "stepId";
@@ -24,14 +24,14 @@ public class StepFragment extends Fragment implements StepContract.ViewStep {
     private int mRecipeId;
     private int mStepId;
 
-    private StepContract.PresenterStep mPresenterStep;
+    private StepDetailContract.PresenterStep mPresenterStep;
 
     private StepFragmentListener mListener;
 
-    public StepFragment() {}
+    public StepDetailFragment() {}
 
-    public static StepFragment newInstance(int aRecipeId, int aStepId) {
-        StepFragment fragment = new StepFragment();
+    public static StepDetailFragment newInstance(int aRecipeId, int aStepId) {
+        StepDetailFragment fragment = new StepDetailFragment();
         Bundle args = new Bundle();
         args.putInt(RECIPE_ID, aRecipeId);
         args.putInt(STEP_ID, aStepId);
@@ -73,7 +73,7 @@ public class StepFragment extends Fragment implements StepContract.ViewStep {
     }
 
     @Override
-    public void setPresenter(StepContract.PresenterStep aPresenter) {
+    public void setPresenter(StepDetailContract.PresenterStep aPresenter) {
         mPresenterStep=aPresenter;
     }
 

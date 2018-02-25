@@ -8,8 +8,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.portfolio.udacity.android.bakingapp.R;
-import com.portfolio.udacity.android.bakingapp.ui.detail.step.StepFragment;
-import com.portfolio.udacity.android.bakingapp.ui.detail.step.StepPresenter;
+import com.portfolio.udacity.android.bakingapp.ui.detail.stepdetail.StepDetailFragment;
+import com.portfolio.udacity.android.bakingapp.ui.detail.stepdetail.StepDetailPresenter;
 import com.portfolio.udacity.android.bakingapp.utils.Injection;
 import com.portfolio.udacity.android.bakingapp.utils.Utils;
 
@@ -22,7 +22,7 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     private int mRecipeId;
 
     private DetailPresenter mDetailPresenter;
-    private StepPresenter mStepPresenter;
+    private StepDetailPresenter mStepDetailPresenter;
 
     public static void start(Context aContext, int aRecipeId) {
         Intent intent = new Intent(aContext,DetailActivity.class);
@@ -70,13 +70,13 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
                         Injection.provideSchedulerProvider(),
                         detailFragment,
                         this);
-                StepFragment stepFragment = (StepFragment) getSupportFragmentManager().findFragmentById(R.id.activity_detail_step_fragment_container);
-                if (stepFragment != null) {//StepFragment present!
-                    mStepPresenter = new StepPresenter(
+                StepDetailFragment stepDetailFragment = (StepDetailFragment) getSupportFragmentManager().findFragmentById(R.id.activity_detail_step_fragment_container);
+                if (stepDetailFragment != null) {//StepDetailFragment present!
+                    mStepDetailPresenter = new StepDetailPresenter(
                             Injection.provideRecipeRepository(
                                     Injection.provideRecipeRemoteDataSource(Injection.provideBakingAppApi())),
                             Injection.provideSchedulerProvider(),
-                            stepFragment);
+                            stepDetailFragment);
                 }
             }
         } catch (Exception e) {
@@ -86,24 +86,22 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
     @Override
     public void onStepClick(int aRecipeId, int aStepId) {
         try {
-            StepFragment stepFragment = StepFragment.newInstance(aRecipeId, aStepId);
-            mStepPresenter = new StepPresenter(
+            StepDetailFragment stepDetailFragment = StepDetailFragment.newInstance(aRecipeId, aStepId);
+            mStepDetailPresenter = new StepDetailPresenter(
                     Injection.provideRecipeRepository(
                             Injection.provideRecipeRemoteDataSource(Injection.provideBakingAppApi())),
                     Injection.provideSchedulerProvider(),
-                    stepFragment);
+                    stepDetailFragment);
             getSupportFragmentManager().beginTransaction()
-                    .addToBackStack(StepFragment.TAG)
+                    .addToBackStack(StepDetailFragment.TAG)
                     .add(R.id.activity_detail_step_fragment_container,
-                            stepFragment,
-                            StepFragment.TAG)
+                            stepDetailFragment,
+                            StepDetailFragment.TAG)
                     .commit();
         } catch (Exception e) {
             Toast.makeText(this, getString(R.string.problem_loading_screen), Toast.LENGTH_SHORT).show();
         }
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -113,5 +111,15 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //This is because for some reason fragment manager pops fragment leaving activity on its own
+        if (getSupportFragmentManager().getBackStackEntryCount()<2) {
+            finish();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

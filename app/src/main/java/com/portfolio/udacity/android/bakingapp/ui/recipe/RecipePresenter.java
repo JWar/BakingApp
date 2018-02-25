@@ -56,6 +56,7 @@ public class RecipePresenter implements RecipeContract.PresenterRecipe {
                     @Override
                     public void accept(List<Recipe> aRecipes) throws Exception {
                         if (aRecipes != null) {
+                            mRecipeRepository.setRecipes(aRecipes);
                             mViewRecipe.setRecipes(aRecipes);
                         } else {
                             mViewRecipe.problemFindingData();

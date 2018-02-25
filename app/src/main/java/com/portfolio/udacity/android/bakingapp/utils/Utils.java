@@ -1,6 +1,7 @@
 package com.portfolio.udacity.android.bakingapp.utils;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 /**
@@ -16,7 +17,20 @@ public class Utils {
     //Needed to check difference between table and phone.
     //Basically layout automatically handles it but if Im going to be using different views
     //for the Tablet layout, then the code needs to be different...
-    public static boolean isTablet(Context context) {
-        return context.getResources().getConfiguration().smallestScreenWidthDp >= 600;
+    public static boolean isTablet(Context aContext) {
+        return aContext.getResources().getConfiguration().smallestScreenWidthDp >= 600;
     }
+
+    //These are needed to tidy up Ingredients
+    public static String stringToFirstCapital (String aWord) {
+        return aWord.toUpperCase().charAt(0) + aWord.substring(1).toLowerCase();
+    }
+    public static String stringToTitleCase (String aInputString) {
+        String [] split = aInputString.split(" ");
+        for (int i = 0; i < split.length; i++) {
+            split[i] = stringToFirstCapital(split[i]);
+        }
+        return TextUtils.join(" ", split);
+    }
+
 }

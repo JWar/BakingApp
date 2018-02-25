@@ -51,4 +51,14 @@ public class RecipeActivity extends AppCompatActivity implements RecipeContract.
     public void onRecipeClick(int aRecipeId) {
         DetailActivity.start(this,aRecipeId);
     }
+
+    @Override
+    public void onBackPressed() {
+        //This is because for some reason fragment manager pops fragment leaving activity on its own
+        if (getSupportFragmentManager().getBackStackEntryCount()<2) {
+            finish();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

@@ -1,4 +1,4 @@
-package com.portfolio.udacity.android.bakingapp.ui.detail.step;
+package com.portfolio.udacity.android.bakingapp.ui.detail.stepdetail;
 
 import com.portfolio.udacity.android.bakingapp.data.model.Recipe;
 import com.portfolio.udacity.android.bakingapp.ui.BasePresenter;
@@ -9,7 +9,7 @@ import com.portfolio.udacity.android.bakingapp.ui.BaseView;
  * This will handle getting video etc...
  */
 
-interface StepContract {
+interface StepDetailContract {
     interface ViewStep extends BaseView<PresenterStep> {
         void setRecipe(Recipe aRecipe);
     }

@@ -4,18 +4,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/detail_margin"
+    android:background="@drawable/border_black"
+    android:minHeight="@dimen/list_item_min_height">
 
     <TextView
         android:id="@+id/list_item_step_description_short_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/border_black"
+        android:paddingEnd="@dimen/detail_margin"
+        android:paddingStart="@dimen/detail_margin"
         android:text="@string/recipe_step_description_short"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/list_item_step_thumbnail_iv"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/recipe_step_description_short"/>
+
+    <ImageView
+        android:id="@+id/list_item_step_thumbnail_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_image_black_48px"/>
 </android.support.constraint.ConstraintLayout>

@@ -1,4 +1,4 @@
-package com.portfolio.udacity.android.bakingapp.ui.detail.step;
+package com.portfolio.udacity.android.bakingapp.ui.detail.stepdetail;
 
 import android.support.annotation.NonNull;
 import com.portfolio.udacity.android.bakingapp.data.model.Recipe;
@@ -15,20 +15,20 @@ import io.reactivex.functions.Consumer;
  *
  */
 
-public class StepPresenter implements StepContract.PresenterStep {
+public class StepDetailPresenter implements StepDetailContract.PresenterStep {
 
     @NonNull
     private final RecipeRepository mRecipeRepository;
     @NonNull
     private final BaseSchedulerProvider mBaseSchedulerProvider;
     @NonNull
-    private final StepContract.ViewStep mViewStep;
+    private final StepDetailContract.ViewStep mViewStep;
 
     private CompositeDisposable mDisposables;
 
-    public StepPresenter(@NonNull RecipeRepository aRecipeRepository,
-                           @NonNull BaseSchedulerProvider aBaseSchedulerProvider,
-                           @NonNull StepContract.ViewStep aViewStep) {
+    public StepDetailPresenter(@NonNull RecipeRepository aRecipeRepository,
+                               @NonNull BaseSchedulerProvider aBaseSchedulerProvider,
+                               @NonNull StepDetailContract.ViewStep aViewStep) {
         mRecipeRepository=aRecipeRepository;
         mBaseSchedulerProvider=aBaseSchedulerProvider;
         mViewStep=aViewStep;
@@ -59,7 +59,7 @@ public class StepPresenter implements StepContract.PresenterStep {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable aThrowable) throws Exception {
-                        Utils.logDebug("StepPresenter.getRecipe: "+aThrowable.getLocalizedMessage());
+                        Utils.logDebug("StepDetailPresenter.getRecipe: "+aThrowable.getLocalizedMessage());
                         mViewStep.problemFindingData();
                     }
                 });

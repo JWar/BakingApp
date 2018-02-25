@@ -85,13 +85,15 @@ public class DetailFragment extends Fragment implements DetailContract.ViewDetai
     public void setRecipe(Recipe aRecipe) {
         try {
             StringBuilder stringBuilder = new StringBuilder();
+            String toDisplay = getString(R.string.ingredients) + "\n\n";
+            stringBuilder.append(toDisplay);
             for (Ingredient ingredient : aRecipe.mIngredients) {
-                String string = ingredient.mQuantity + " ";
-                stringBuilder.append(string);
-                string = ingredient.mMeasure + " ";
-                stringBuilder.append(string);
-                string = ingredient.mIngredient + "\n";
-                stringBuilder.append(string);
+                toDisplay = ingredient.mQuantity + " ";
+                stringBuilder.append(toDisplay);
+                toDisplay = ingredient.mMeasure + " ";
+                stringBuilder.append(toDisplay);
+                toDisplay = ingredient.mIngredient + "\n";
+                stringBuilder.append(toDisplay);
             }
             mIngredientsTV.setText(stringBuilder.toString());
             ((RecyclerViewAdapter) mStepRV.getAdapter()).swapSteps(aRecipe.mSteps);
