@@ -1,4 +1,4 @@
-package com.portfolio.udacity.android.bakingapp.ui.detail.stepdetail;
+package com.portfolio.udacity.android.bakingapp.ui.stepdetail;
 
 import android.support.annotation.NonNull;
 import com.portfolio.udacity.android.bakingapp.data.model.Recipe;
@@ -21,18 +21,23 @@ public class StepDetailPresenter implements StepDetailContract.PresenterStep {
     private final RecipeRepository mRecipeRepository;
     @NonNull
     private final BaseSchedulerProvider mBaseSchedulerProvider;
+    //Sigh not final due to need to change View. Would it be better to remake presenter?
     @NonNull
-    private final StepDetailContract.ViewStep mViewStep;
+    private StepDetailContract.ViewStep mViewStep;
+    @NonNull
+    private final StepDetailContract.ActivityStep mActivityStep;
 
     private CompositeDisposable mDisposables;
 
     public StepDetailPresenter(@NonNull RecipeRepository aRecipeRepository,
                                @NonNull BaseSchedulerProvider aBaseSchedulerProvider,
-                               @NonNull StepDetailContract.ViewStep aViewStep) {
+                               @NonNull StepDetailContract.ViewStep aViewStep,
+                               @NonNull StepDetailContract.ActivityStep aActivityStep) {
         mRecipeRepository=aRecipeRepository;
         mBaseSchedulerProvider=aBaseSchedulerProvider;
         mViewStep=aViewStep;
         mViewStep.setPresenter(this);
+        mActivityStep=aActivityStep;
         mDisposables=new CompositeDisposable();
     }
 
@@ -64,5 +69,25 @@ public class StepDetailPresenter implements StepDetailContract.PresenterStep {
                     }
                 });
         mDisposables.add(disposable);
+    }
+
+    @Override
+    public void onUpClick(int aRecipeId, int aStepId) {
+        Utils.logDebug("onUpClick");
+        mActivityStep.onUpClick(aRecipeId,aStepId);
+    }
+
+    @Override
+    public void onDownClick(int aRecipeId, int aStepId) {
+        Utils.logDebug("onDownClick");
+        mActivityStep.onDownClick(aRecipeId,aStepId,mRecipeRepository.getRecipe(aRecipeId).mSteps.size());
+    }
+
+    @Override
+    public void setView(StepDetailContract.ViewStep aViewStep) {
+        mViewStep=aViewStep;
+        mViewStep.setPresenter(this);
+        //Clear disposables if view is changing.
+        unSubscribe();
     }
 }

@@ -6,9 +6,11 @@
     <string name="problem_finding_data">Problem finding data</string>
     <string name="problem_setting_data">Problem setting data</string>
     <string name="problem_loading_screen">Problem loading screen</string>
+    <string name="problem_loading_video">Problem loading video</string>
 
     <string name="step">Step</string>
     <string name="ingredients">Ingredients:</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="up_navigation">Up</string>
+    <string name="down_navigation">Down</string>
 </resources>

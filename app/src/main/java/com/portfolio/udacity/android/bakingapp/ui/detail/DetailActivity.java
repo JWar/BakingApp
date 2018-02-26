@@ -8,15 +8,17 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.portfolio.udacity.android.bakingapp.R;
-import com.portfolio.udacity.android.bakingapp.ui.detail.stepdetail.StepDetailFragment;
-import com.portfolio.udacity.android.bakingapp.ui.detail.stepdetail.StepDetailPresenter;
+import com.portfolio.udacity.android.bakingapp.ui.stepdetail.StepDetailContract;
+import com.portfolio.udacity.android.bakingapp.ui.stepdetail.StepDetailFragment;
+import com.portfolio.udacity.android.bakingapp.ui.stepdetail.StepDetailPresenter;
 import com.portfolio.udacity.android.bakingapp.utils.Injection;
 import com.portfolio.udacity.android.bakingapp.utils.Utils;
 
 /**
  * This will hold both Detail and Step.
  */
-public class DetailActivity extends AppCompatActivity implements DetailContract.ActivityDetail {
+public class DetailActivity extends AppCompatActivity implements DetailContract.ActivityDetail,
+        StepDetailContract.ActivityStep {
 
     private static final String RECIPE_ID = "recipeId";
     private int mRecipeId;
@@ -76,7 +78,8 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
                             Injection.provideRecipeRepository(
                                     Injection.provideRecipeRemoteDataSource(Injection.provideBakingAppApi())),
                             Injection.provideSchedulerProvider(),
-                            stepDetailFragment);
+                            stepDetailFragment,
+                            this);
                 }
             }
         } catch (Exception e) {
@@ -91,7 +94,8 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
                     Injection.provideRecipeRepository(
                             Injection.provideRecipeRemoteDataSource(Injection.provideBakingAppApi())),
                     Injection.provideSchedulerProvider(),
-                    stepDetailFragment);
+                    stepDetailFragment,
+                    this);
             getSupportFragmentManager().beginTransaction()
                     .addToBackStack(StepDetailFragment.TAG)
                     .add(R.id.activity_detail_step_fragment_container,
@@ -99,6 +103,37 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
                             StepDetailFragment.TAG)
                     .commit();
         } catch (Exception e) {
+            Utils.logDebug("Error in DetailActivity.onStepClick: "+e.getLocalizedMessage());
+            Toast.makeText(this, getString(R.string.problem_loading_screen), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onUpClick(int aRecipeId, int aStepId) {
+        Utils.logDebug("ActonUpClick");
+        if (aStepId!=0) {
+            stepNavigation(aRecipeId, aStepId - 1);
+        }
+    }
+
+    @Override
+    public void onDownClick(int aRecipeId, int aStepId, int aStepsLen) {
+        if (aStepId<(aStepsLen-1)) {
+            stepNavigation(aRecipeId, aStepId + 1);
+        }
+    }
+    private void stepNavigation(int aRecipeId, int aStepId) {
+        try {
+            StepDetailFragment stepDetailFragment = StepDetailFragment.newInstance(aRecipeId, aStepId);
+            mStepDetailPresenter.setView(stepDetailFragment);
+            getSupportFragmentManager().beginTransaction()
+                    .addToBackStack(StepDetailFragment.TAG)
+                    .replace(R.id.activity_detail_step_fragment_container,
+                            stepDetailFragment,
+                            StepDetailFragment.TAG)
+                    .commit();
+        } catch (Exception e) {
+            Utils.logDebug("Error in DetailActivity.onUpClick: "+e.getLocalizedMessage());
             Toast.makeText(this, getString(R.string.problem_loading_screen), Toast.LENGTH_SHORT).show();
         }
     }
