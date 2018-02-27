@@ -5,13 +5,7 @@ import com.portfolio.udacity.android.bakingapp.data.model.Recipe;
 import java.util.List;
 
 import io.reactivex.Observable;
-
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Streaming;
-import retrofit2.http.Url;
 
 /**
  * Created by JonGaming on 22/02/2018.
@@ -25,11 +19,5 @@ public interface BakingAppApi {
 
     @GET("baking.json")
     Observable<List<Recipe>> getRecipes();
-
-    @GET
-    @Streaming
-    Call<ResponseBody> getVideo(@Url String url);
-
-
 
 }

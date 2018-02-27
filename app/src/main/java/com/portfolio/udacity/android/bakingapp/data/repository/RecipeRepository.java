@@ -3,7 +3,6 @@ package com.portfolio.udacity.android.bakingapp.data.repository;
 import android.support.annotation.NonNull;
 
 import com.portfolio.udacity.android.bakingapp.data.model.Recipe;
-import com.portfolio.udacity.android.bakingapp.data.source.remote.BakingAppApi;
 import com.portfolio.udacity.android.bakingapp.data.source.remote.RecipeRemoteDataSource;
 
 import java.util.List;

@@ -26,6 +26,7 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fragment_detail_step_rv"
+            android:focusable="false"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/detail_margin"

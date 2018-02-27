@@ -1,30 +1,16 @@
 package com.portfolio.udacity.android.bakingapp.data.source.remote;
 
-import android.support.annotation.NonNull;
 import com.portfolio.udacity.android.bakingapp.data.model.Recipe;
+
 import java.util.List;
+
 import io.reactivex.Observable;
 
 /**
- * Created by JonGaming on 23/02/2018.
- * For accessing remote data.
+ * Created by JonGaming on 27/02/2018.
+ * Handles contract for remote data source. Basically allowing Mock/Prod switches
  */
 
-public class RecipeRemoteDataSource {
-    private static RecipeRemoteDataSource sInstance=null;
-
-    private BakingAppApi mBakingAppApi;
-
-    public static synchronized RecipeRemoteDataSource getInstance(@NonNull BakingAppApi aBakingAppApi) {
-        if (sInstance==null) {
-            sInstance=new RecipeRemoteDataSource(aBakingAppApi);
-        }
-        return sInstance;
-    }
-    private RecipeRemoteDataSource(@NonNull BakingAppApi aBakingAppApi) {
-        mBakingAppApi=aBakingAppApi;
-    }
-    public Observable<List<Recipe>> getRecipes() {
-        return mBakingAppApi.getRecipes();
-    }
+public interface RecipeRemoteDataSource {
+    Observable<List<Recipe>> getRecipes();
 }

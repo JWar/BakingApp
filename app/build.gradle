@@ -16,6 +16,34 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    // If you need to add more flavors, consider using flavor dimensions.
+    flavorDimensions "debug"
+    productFlavors {
+        mock {
+            dimension "debug"
+            applicationIdSuffix = ".mock"
+        }
+        prod {
+            dimension "debug"
+            applicationId = "com.jraw.android.jonsapp"
+        }
+    }
+    // Remove mockRelease as it's not needed.
+    android.variantFilter { variant ->
+        if (variant.buildType.name.equals('release')
+                && variant.getFlavors().get(0).name.equals('mock')) {
+            variant.setIgnore(true);
+        }
+    }
+    // Always show the result of every unit test, even if it passes.
+    testOptions.unitTests.all {
+        testLogging {
+            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+            outputs.upToDateWhen { false }
+            showStandardStreams = true
+        }
+    }
+    sourceSets { main { java.srcDirs = ['src/main/java', 'src/main/java/mock'] } }
 }
 
 dependencies {

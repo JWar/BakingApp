@@ -1,11 +1,11 @@
 package com.portfolio.udacity.android.bakingapp.ui.recipe;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+
+import com.portfolio.udacity.android.bakingapp.Injection;
 import com.portfolio.udacity.android.bakingapp.R;
 import com.portfolio.udacity.android.bakingapp.ui.detail.DetailActivity;
-import com.portfolio.udacity.android.bakingapp.utils.Injection;
 import com.portfolio.udacity.android.bakingapp.utils.Utils;
 
 /**

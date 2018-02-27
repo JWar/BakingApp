@@ -7,11 +7,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.portfolio.udacity.android.bakingapp.Injection;
 import com.portfolio.udacity.android.bakingapp.R;
 import com.portfolio.udacity.android.bakingapp.ui.stepdetail.StepDetailContract;
 import com.portfolio.udacity.android.bakingapp.ui.stepdetail.StepDetailFragment;
 import com.portfolio.udacity.android.bakingapp.ui.stepdetail.StepDetailPresenter;
-import com.portfolio.udacity.android.bakingapp.utils.Injection;
 import com.portfolio.udacity.android.bakingapp.utils.Utils;
 
 /**
