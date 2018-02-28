@@ -2,6 +2,8 @@ package com.portfolio.udacity.android.bakingapp.ui.detail;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -12,6 +14,7 @@ import com.portfolio.udacity.android.bakingapp.R;
 import com.portfolio.udacity.android.bakingapp.ui.stepdetail.StepDetailContract;
 import com.portfolio.udacity.android.bakingapp.ui.stepdetail.StepDetailFragment;
 import com.portfolio.udacity.android.bakingapp.ui.stepdetail.StepDetailPresenter;
+import com.portfolio.udacity.android.bakingapp.utils.EspressoIdlingResource;
 import com.portfolio.udacity.android.bakingapp.utils.Utils;
 
 /**
@@ -156,5 +159,9 @@ public class DetailActivity extends AppCompatActivity implements DetailContract.
         } else {
             super.onBackPressed();
         }
+    }
+    @VisibleForTesting
+    public IdlingResource getCountingIdlingResource() {
+        return EspressoIdlingResource.getIdlingResource();
     }
 }

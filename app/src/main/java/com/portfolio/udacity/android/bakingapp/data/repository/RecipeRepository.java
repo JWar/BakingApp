@@ -35,7 +35,7 @@ public class RecipeRepository {
         mRecipes=aRecipes;
     }
     public Observable<List<Recipe>> getRecipes() {
-        if (mRecipes!=null){
+        if (mRecipes!=null) {
             return Observable.just(mRecipes);
         } else {
             return mRecipeRemoteDataSource.getRecipes();

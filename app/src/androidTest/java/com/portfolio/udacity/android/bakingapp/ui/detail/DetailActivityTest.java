@@ -1,5 +1,8 @@
 package com.portfolio.udacity.android.bakingapp.ui.detail;
 
+import android.content.Context;
+import android.content.Intent;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -31,7 +34,16 @@ public class DetailActivityTest {
 
     @Rule
     public ActivityTestRule<DetailActivity> mActivityTestRule =
-            new ActivityTestRule<>(DetailActivity.class);
+            new ActivityTestRule<DetailActivity>(DetailActivity.class) {
+                @Override
+                protected Intent getActivityIntent() {
+                    Context targetContext = InstrumentationRegistry.getInstrumentation()
+                            .getTargetContext();
+                    Intent result = new Intent(targetContext, DetailActivity.class);
+                    result.putExtra("recipeId", 0);
+                    return result;
+                }
+            };
 
     @Test
     public void testDetailStepRVData() {

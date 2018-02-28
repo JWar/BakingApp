@@ -19,9 +19,6 @@ public class MockRecipeRemoteDataSource implements RecipeRemoteDataSource {
 
     private BakingAppApi mBakingAppApi;
 
-    //This is where any data we want is created to be returned in our tests.
-    private List<Recipe> mDummyData;
-
     public static synchronized MockRecipeRemoteDataSource getInstance(@NonNull BakingAppApi aBakingAppApi) {
         if (sInstance==null) {
             sInstance=new MockRecipeRemoteDataSource(aBakingAppApi);
@@ -30,10 +27,9 @@ public class MockRecipeRemoteDataSource implements RecipeRemoteDataSource {
     }
     private MockRecipeRemoteDataSource(@NonNull BakingAppApi aBakingAppApi) {
         mBakingAppApi=aBakingAppApi;
-        mDummyData=DummyData.getRecipes();
     }
     @Override
     public Observable<List<Recipe>> getRecipes() {
-        return Observable.just(mDummyData);
+        return Observable.just(DummyData.getRecipes());
     }
 }

@@ -35,5 +35,4 @@ public class ProdRecipeRemoteDataSource implements RecipeRemoteDataSource {
     public Observable<List<Recipe>> getRecipes() {
         return mBakingAppApi.getRecipes();
     }
-
 }
