@@ -1,11 +1,14 @@
 package com.portfolio.udacity.android.bakingapp.ui.recipe;
 
 import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 
 import com.portfolio.udacity.android.bakingapp.Injection;
 import com.portfolio.udacity.android.bakingapp.R;
 import com.portfolio.udacity.android.bakingapp.ui.detail.DetailActivity;
+import com.portfolio.udacity.android.bakingapp.utils.EspressoIdlingResource;
 import com.portfolio.udacity.android.bakingapp.utils.Utils;
 
 /**
@@ -60,5 +63,9 @@ public class RecipeActivity extends AppCompatActivity implements RecipeContract.
         } else {
             super.onBackPressed();
         }
+    }
+    @VisibleForTesting
+    public IdlingResource getCountingIdlingResource() {
+        return EspressoIdlingResource.getIdlingResource();
     }
 }

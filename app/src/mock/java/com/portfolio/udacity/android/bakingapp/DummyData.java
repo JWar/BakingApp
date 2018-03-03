@@ -25,11 +25,12 @@ public class DummyData {
         ingredient.mQuantity=2;
         ingredient.mMeasure="CUP";
         ingredient.mIngredient="Mockolate Paste";
+        recipe.mIngredients.add(ingredient);
         Step step = new Step();
         step.mId=0;
         step.mShortDescription="Recipe Introduction";
         step.mDescription="Recipe Introduction";
-        step.mVideoURL="https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4";
+        step.mVideoURL="";
         step.mThumbnailURL="";
         recipe.mSteps.add(step);
         recipes.add(recipe);

@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.portfolio.udacity.android.bakingapp.data.model.Recipe;
 import com.portfolio.udacity.android.bakingapp.data.repository.RecipeRepository;
+import com.portfolio.udacity.android.bakingapp.utils.EspressoIdlingResource;
 import com.portfolio.udacity.android.bakingapp.utils.Utils;
 import com.portfolio.udacity.android.bakingapp.utils.schedulers.BaseSchedulerProvider;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -49,9 +51,17 @@ public class RecipePresenter implements RecipeContract.PresenterRecipe {
 
     @Override
     public void getRecipes() {
+        EspressoIdlingResource.increment();
         Disposable disposable = mRecipeRepository.getRecipes()
                 .observeOn(mBaseSchedulerProvider.ui())
                 .subscribeOn(mBaseSchedulerProvider.io())
+                .doFinally(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        if (!EspressoIdlingResource.getIdlingResource().isIdleNow()) {
+                            EspressoIdlingResource.decrement(); // Set app as idle.
+                        }
+                    }})
                 .subscribe(new Consumer<List<Recipe>>() {
                     @Override
                     public void accept(List<Recipe> aRecipes) throws Exception {

@@ -1,12 +1,9 @@
 package com.portfolio.udacity.android.bakingapp.data.repository;
 
 import android.support.annotation.NonNull;
-
 import com.portfolio.udacity.android.bakingapp.data.model.Recipe;
 import com.portfolio.udacity.android.bakingapp.data.source.remote.RecipeRemoteDataSource;
-
 import java.util.List;
-
 import io.reactivex.Observable;
 
 /**
@@ -30,7 +27,10 @@ public class RecipeRepository {
     private RecipeRepository(@NonNull RecipeRemoteDataSource aRecipeRemoteDataSource) {
         mRecipeRemoteDataSource=aRecipeRemoteDataSource;
     }
-
+    //Checks to see if mRecipes is null
+    public boolean isRecipesNull() {
+        return mRecipes==null;
+    }
     public void setRecipes(List<Recipe> aRecipes) {
         mRecipes=aRecipes;
     }
@@ -42,11 +42,16 @@ public class RecipeRepository {
         }
     }
     public Recipe getRecipe(int aRecipeId) {
-        for (Recipe recipe: mRecipes) {
-            if (recipe.mId==aRecipeId) {
-                return recipe;
+        if (mRecipes==null) {
+            //Should never be if DetailPresenter does its job. Must be a better way though.
+            return null;
+        } else {
+            for (Recipe recipe : mRecipes) {
+                if (recipe.mId == aRecipeId) {
+                    return recipe;
+                }
             }
+            return null;
         }
-        return null;
     }
 }

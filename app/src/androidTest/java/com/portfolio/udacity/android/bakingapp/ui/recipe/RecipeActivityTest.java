@@ -1,5 +1,6 @@
 package com.portfolio.udacity.android.bakingapp.ui.recipe;
 
+import android.support.test.espresso.IdlingRegistry;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -14,6 +15,8 @@ import com.portfolio.udacity.android.bakingapp.R;
 
 import static org.hamcrest.Matchers.anything;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +41,17 @@ public class RecipeActivityTest {
     @Rule
     public ActivityTestRule<RecipeActivity> mActivityTestRule =
             new ActivityTestRule<>(RecipeActivity.class);
+
+    @Before
+    public void setUp() throws Exception {
+        IdlingRegistry.getInstance().register(
+                mActivityTestRule.getActivity().getCountingIdlingResource());
+    }
+    @After
+    public void tearDown() throws Exception {
+        IdlingRegistry.getInstance().unregister(
+                mActivityTestRule.getActivity().getCountingIdlingResource());
+    }
 
     @Test
     public void testRecipeRVData() {

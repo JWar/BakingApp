@@ -64,6 +64,7 @@ public class DetailFragment extends Fragment implements DetailContract.ViewDetai
         super.onViewCreated(view, savedInstanceState);
         mIngredientsTV = view.findViewById(R.id.fragment_detail_recipe_ingredients);
         mStepRV = view.findViewById(R.id.fragment_detail_step_rv);
+        mStepRV.setFocusable(false);
         mStepRV.setLayoutManager(new LinearLayoutManager(mStepRV.getContext()));
         mStepRV.setAdapter(new RecyclerViewAdapter(new ListHandlerCallback() {
             @Override
@@ -90,9 +91,9 @@ public class DetailFragment extends Fragment implements DetailContract.ViewDetai
             for (Ingredient ingredient : aRecipe.mIngredients) {
                 toDisplay = ingredient.mQuantity + " ";
                 stringBuilder.append(toDisplay);
-                toDisplay = ingredient.mMeasure + " ";
+                toDisplay = ingredient.mMeasure.toLowerCase() + " - ";
                 stringBuilder.append(toDisplay);
-                toDisplay = ingredient.mIngredient + "\n";
+                toDisplay = Utils.stringToFirstCapital(ingredient.mIngredient) + "\n";
                 stringBuilder.append(toDisplay);
             }
             mIngredientsTV.setText(stringBuilder.toString());

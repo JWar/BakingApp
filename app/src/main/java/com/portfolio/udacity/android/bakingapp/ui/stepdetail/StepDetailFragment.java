@@ -16,6 +16,7 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,9 +68,10 @@ public class StepDetailFragment extends Fragment implements StepDetailContract.V
 
     private SimpleExoPlayer mSimpleExoPlayer;
     private SimpleExoPlayerView mSimpleExoPlayerView;
+    private ImageView mErrorIV;
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
-    //Tracks playerposition
+    //Tracks player position
     private static final String PLAYER_POS = "playerPos";
     private long mPlayerPos;
 
@@ -136,6 +138,7 @@ public class StepDetailFragment extends Fragment implements StepDetailContract.V
         }
 
         mSimpleExoPlayerView = view.findViewById(R.id.fragment_step_detail_exoplayerview);
+        mErrorIV = view.findViewById(R.id.fragment_step_detail_player_error_iv);
     }
 
     @Override
@@ -156,6 +159,11 @@ public class StepDetailFragment extends Fragment implements StepDetailContract.V
     @Override
     public void problemFindingData() {
         Toast.makeText(getActivity(), getString(R.string.problem_finding_data), Toast.LENGTH_SHORT).show();
+        showErrorIV();
+    }
+    private void showErrorIV() {
+        mSimpleExoPlayerView.setVisibility(View.GONE);
+        mErrorIV.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -166,7 +174,8 @@ public class StepDetailFragment extends Fragment implements StepDetailContract.V
                 mStepInstructionTV.setText(step.mDescription);
             }
             //Set view
-            //Note not sure if this is working... can remove if needs be?
+            //Note not sure if this is working, defaultArtwork isnt doing anything?
+            //... can remove if needs be?
             if (step.mThumbnailURL != null && !step.mThumbnailURL.equals("")) {
                 //Loads bitmap into SimpleExoPlayerView.
                 Target target = new Target() {
@@ -207,6 +216,8 @@ public class StepDetailFragment extends Fragment implements StepDetailContract.V
                 mSimpleExoPlayerView.setUseArtwork(true);
                 mSimpleExoPlayerView.setDefaultArtwork(
                         BitmapFactory.decodeResource(getResources(), R.drawable.ic_image_white_48px));
+                //Since setDefaultArtwork isnt working?
+                showErrorIV();
             }
         } catch (Exception e) {
             Utils.logDebug("Error in StepDetailFragment.setRecipe: " + e.getLocalizedMessage());
@@ -315,6 +326,7 @@ public class StepDetailFragment extends Fragment implements StepDetailContract.V
     public void onPlayerError(ExoPlaybackException error) {
         Utils.logDebug("StepDetailFragment.onPlayerError: " + error.getLocalizedMessage());
         Toast.makeText(getActivity(), getString(R.string.problem_loading_video), Toast.LENGTH_SHORT).show();
+        showErrorIV();
     }
 
     @Override

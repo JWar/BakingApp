@@ -5,22 +5,38 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="1"
+    android:background="@android:color/white"
     tools:context=".ui.stepdetail.StepDetailFragment">
 
-    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-        android:id="@+id/fragment_step_detail_exoplayerview"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.7"
-        android:background="@drawable/border_black"/>
+        android:layout_weight="0.7">
+
+        <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+            android:id="@+id/fragment_step_detail_exoplayerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/border_black"/>
+
+        <ImageView
+            android:id="@+id/fragment_step_detail_player_error_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/error_image"
+            android:src="@drawable/ic_error_black_48px"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/fragment_step_detail_instruction_tv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.2"
-        android:padding="4dp"
-        android:background="@drawable/border_black"/>
+        android:background="@drawable/border_black"
+        android:padding="4dp"/>
 
     <RelativeLayout
         android:id="@+id/fragment_step_detail_navigation_rl"

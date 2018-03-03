@@ -7,10 +7,18 @@
     <string name="problem_setting_data">Problem setting data</string>
     <string name="problem_loading_screen">Problem loading screen</string>
     <string name="problem_loading_video">Problem loading video</string>
+    <string name="error_image">Error image</string>
 
     <string name="step">Step</string>
     <string name="ingredients">Ingredients:</string>
 
     <string name="up_navigation">Up</string>
     <string name="down_navigation">Down</string>
+
+    <string name="widget_label">Select recipe for widget</string>
+    <string name="widget_default_text">Recipe unavailable.</string>
+    <string name="widget_selected_recipe_text">Recipe selected!</string>
+    <string name="widget_problem_selecting_recipe">Problem with recipe selection</string>
+    <string name="widget_button_choose_recipe">Choose recipe</string>
+    <string name="widget_launching_app">Launching App</string>
 </resources>

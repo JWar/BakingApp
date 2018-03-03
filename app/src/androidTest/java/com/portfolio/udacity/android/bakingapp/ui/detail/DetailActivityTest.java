@@ -3,18 +3,23 @@ package com.portfolio.udacity.android.bakingapp.ui.detail;
 import android.content.Context;
 import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.IdlingRegistry;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import com.portfolio.udacity.android.bakingapp.R;
 import com.portfolio.udacity.android.bakingapp.ui.recipe.RecipeActivity;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -26,11 +31,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
  */
 @RunWith(AndroidJUnit4.class)
 public class DetailActivityTest {
-    //Forced expected data. If I really wanted to be smart Id do dummy data in model and 'Injection'
-    //that into the data via the RecipeRepository... Making androidTest have its own self-contained
-    //data/tests
-    private static final String STEP_DETAIL = "Recipe Introduction";
-    private static final String MOCKOLATE_PASTE = "Mockolate Paste";
+    private static final String STEP_DETAIL = "Step 1:\nRecipe Introduction";
+    private static final String STEP_DETAIL_INSTRUCTION = "Recipe Introduction";
+    private static final String INGREDIENTS = "Ingredients:\n\n2.0 CUP Mockolate Paste\n";
 
     @Rule
     public ActivityTestRule<DetailActivity> mActivityTestRule =
@@ -45,19 +48,42 @@ public class DetailActivityTest {
                 }
             };
 
+    @Before
+    public void setUp() throws Exception {
+        IdlingRegistry.getInstance().register(
+                mActivityTestRule.getActivity().getCountingIdlingResource());
+    }
+    @After
+    public void tearDown() throws Exception {
+        IdlingRegistry.getInstance().unregister(
+                mActivityTestRule.getActivity().getCountingIdlingResource());
+    }
+
     @Test
     public void testDetailStepRVData() {
         onView(withId(R.id.fragment_detail_step_rv))
                 .perform(RecyclerViewActions
                         .scrollToPosition(0));
 
-        // Check if recipe name as displayed on the specified position of Recipe RecyclerView list matches the given name
+        //Check if Step description is displayed.
         onView(withText(STEP_DETAIL))
                 .check(matches(isDisplayed()));
     }
     @Test
     public void testIngredientsTV() {
         onView(withId(R.id.fragment_detail_recipe_ingredients))
-                .check(matches(withText(MOCKOLATE_PASTE)));
+                .check(matches(withText(INGREDIENTS)));
+    }
+    @Test
+    public void testStepDetailClickAndData() {
+        onView(withId(R.id.fragment_detail_step_rv))
+                .perform(RecyclerViewActions
+                        .actionOnItemAtPosition(0,click()));
+        //Check Step detail instruction
+        onView(withId(R.id.fragment_step_detail_instruction_tv))
+                .check(matches(withText(STEP_DETAIL_INSTRUCTION)));
+        //Check if error image is showing, since dummy data has no url.
+        onView(withId(R.id.fragment_step_detail_player_error_iv))
+                .check(matches(isDisplayed()));
     }
 }
