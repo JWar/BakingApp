@@ -97,28 +97,10 @@ public class DetailPresenter implements DetailContract.PresenterDetail {
                     .subscribe(new Consumer<Recipe>() {
                         @Override
                         public void accept(Recipe aRecipe) throws Exception {
-                            if (aRecipe != null) {
+                            if (aRecipe != null&&aRecipe.mId>0) {
                                 mViewDetail.setRecipe(aRecipe);
-                            } else {
-                                Disposable disposable1 = mRecipeRepository.getRecipes()
-                                        .observeOn(mBaseSchedulerProvider.ui())
-                                        .subscribeOn(mBaseSchedulerProvider.io())
-                                        .subscribe(new Consumer<List<Recipe>>() {
-                                            @Override
-                                            public void accept(List<Recipe> aRecipes) throws Exception {
-                                                mRecipeRepository.setRecipes(aRecipes);
-                                                getRecipe(aRecipeId);
-                                            }
-                                        }, new Consumer<Throwable>() {
-                                            @Override
-                                            public void accept(Throwable aThrowable) throws Exception {
-                                                Utils.logDebug("Error in DetailPresenter.getRecipe null: "+aThrowable.getLocalizedMessage());
-                                                mViewDetail.problemFindingData();
-                                            }
-                                        });
-                                mDisposables.add(disposable1);
-
-
+                            } else {//Should never happen!
+                                Utils.logDebug("DetailPresenter.getRecipe... what??");
                             }
                         }
                     }, new Consumer<Throwable>() {

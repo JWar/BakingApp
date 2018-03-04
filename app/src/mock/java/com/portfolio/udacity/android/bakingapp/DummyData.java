@@ -17,7 +17,7 @@ public class DummyData {
     public static List<Recipe> getRecipes() {
         List<Recipe> recipes = new ArrayList<>();
         Recipe recipe = new Recipe();
-        recipe.mId=0;
+        recipe.mId=1;
         recipe.mName="Mockolate Pie";
         recipe.mImage="";
         recipe.mServing=1;
@@ -30,6 +30,14 @@ public class DummyData {
         step.mId=0;
         step.mShortDescription="Recipe Introduction";
         step.mDescription="Recipe Introduction";
+        step.mVideoURL="";
+        step.mThumbnailURL="";
+        recipe.mSteps.add(step);
+        recipes.add(recipe);
+        step = new Step();
+        step.mId=1;
+        step.mShortDescription="Recipe Step 2";
+        step.mDescription="Recipe Step 2";
         step.mVideoURL="";
         step.mThumbnailURL="";
         recipe.mSteps.add(step);

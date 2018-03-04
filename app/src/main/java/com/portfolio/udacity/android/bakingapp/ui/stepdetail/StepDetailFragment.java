@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.Surface;
@@ -164,6 +165,7 @@ public class StepDetailFragment extends Fragment implements StepDetailContract.V
     }
 
     private void showErrorIV() {
+        Utils.logDebug("StepDetailFragment.showErrorIV()");
         mSimpleExoPlayerView.setVisibility(View.GONE);
         mErrorIV.setVisibility(View.VISIBLE);
     }
@@ -171,6 +173,7 @@ public class StepDetailFragment extends Fragment implements StepDetailContract.V
     @Override
     public void setRecipe(Recipe aRecipe) {
         try {
+            Utils.logDebug("StepDetailFragment:");
             Step step = aRecipe.mSteps.get(mStepId);
             if (mStepInstructionTV != null) {
                 mStepInstructionTV.setText(step.mDescription);
@@ -178,7 +181,7 @@ public class StepDetailFragment extends Fragment implements StepDetailContract.V
             //Set view
             //Note not sure if this is working, defaultArtwork isnt doing anything?
             //... can remove if needs be?
-            if (step.mThumbnailURL != null && !step.mThumbnailURL.equals("")) {
+            if (step.mThumbnailURL != null && !TextUtils.isEmpty(step.mThumbnailURL)) {
                 //Loads bitmap into SimpleExoPlayerView.
                 Target target = new Target() {
                     @Override
@@ -207,7 +210,8 @@ public class StepDetailFragment extends Fragment implements StepDetailContract.V
                 mSimpleExoPlayerView.setDefaultArtwork(
                         BitmapFactory.decodeResource(getResources(), R.drawable.ic_image_white_48px));
             }
-            if (step.mVideoURL != null && !step.mVideoURL.equals("")) {
+            if (step.mVideoURL != null && !TextUtils.isEmpty(step.mVideoURL)) {
+                Utils.logDebug(step.mVideoURL);
                 if (mSimpleExoPlayer == null) {
                     initializeMediaSession();
                     initializePlayer(Uri.parse(step.mVideoURL));

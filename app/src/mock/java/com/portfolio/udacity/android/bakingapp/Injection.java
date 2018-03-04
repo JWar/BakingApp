@@ -44,4 +44,9 @@ public class Injection {
         return new GsonBuilder().registerTypeAdapter(Double.class,
                 new DoubleTypeAdapter()).create();
     }
+    //Sigh horrible way of ensuring Testing strings are handled properly based upon build variant.
+    public static String getIngredientsTestString() {
+        return "Ingredients:\n\n" +
+                "2.0 cup - Mockolate paste\n";
+    }
 }

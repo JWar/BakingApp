@@ -3,6 +3,8 @@ package com.portfolio.udacity.android.bakingapp.data.repository;
 import android.support.annotation.NonNull;
 import com.portfolio.udacity.android.bakingapp.data.model.Recipe;
 import com.portfolio.udacity.android.bakingapp.data.source.remote.RecipeRemoteDataSource;
+import com.portfolio.udacity.android.bakingapp.utils.Utils;
+
 import java.util.List;
 import io.reactivex.Observable;
 

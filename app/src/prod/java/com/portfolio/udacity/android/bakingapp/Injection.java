@@ -42,4 +42,8 @@ public class Injection {
         return new GsonBuilder().registerTypeAdapter(Double.class,
                 new DoubleTypeAdapter()).create();
     }
+    //Sigh horrible way of ensuring Testing strings are handled properly based upon build variant.
+    public static String getIngredientsTestString() {
+        return "Ingredients:\n\n2.0 cup - Graham cracker crumbs\n6.0 tblsp - Unsalted butter, melted\n0.5 cup - Granulated sugar\n1.5 tsp - Salt\n5.0 tblsp - Vanilla\n1.0 k - Nutella or other chocolate-hazelnut spread\n500.0 g - Mascapone cheese(room temperature)\n1.0 cup - Heavy cream(cold)\n4.0 oz - Cream cheese(softened)\n";
+    }
 }

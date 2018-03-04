@@ -9,5 +9,5 @@ import com.google.gson.annotations.SerializedName;
 
 public class entity {
     @SerializedName("id")
-    public int mId;
+    public int mId=-1;
 }
