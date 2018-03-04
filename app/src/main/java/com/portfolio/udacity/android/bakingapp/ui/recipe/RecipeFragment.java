@@ -1,6 +1,7 @@
 package com.portfolio.udacity.android.bakingapp.ui.recipe;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,12 +26,21 @@ public class RecipeFragment extends Fragment implements RecipeContract.ViewRecip
     public static final String TAG = "recipeFragTag";
 
     private static final String RECIPE_RV = "recipeRV";
+    private Parcelable mRVState;
 
     private RecipeContract.PresenterRecipe mPresenterRecipe;
 
     private RecyclerView mRecipeRV;
 
     public RecipeFragment() {}
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState!=null) {
+            mRVState=savedInstanceState.getParcelable(RECIPE_RV);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +73,9 @@ public class RecipeFragment extends Fragment implements RecipeContract.ViewRecip
     @Override
     public void setRecipes(List<Recipe> aRecipes) {
         ((RecyclerViewAdapter)mRecipeRV.getAdapter()).swapRecipes(aRecipes);
+        if (mRVState!=null) {
+            mRecipeRV.getLayoutManager().onRestoreInstanceState(mRVState);
+        }
     }
 
     @Override
@@ -80,14 +93,6 @@ public class RecipeFragment extends Fragment implements RecipeContract.ViewRecip
     public void onPause() {
         super.onPause();
         mPresenterRecipe.unSubscribe();
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        if (savedInstanceState!=null) {
-            mRecipeRV.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(RECIPE_RV));
-        }
     }
 
     @Override

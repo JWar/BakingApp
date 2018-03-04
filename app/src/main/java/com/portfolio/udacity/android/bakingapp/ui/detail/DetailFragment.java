@@ -1,6 +1,7 @@
 package com.portfolio.udacity.android.bakingapp.ui.detail;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,6 +28,8 @@ public class DetailFragment extends Fragment implements DetailContract.ViewDetai
     private int mRecipeId;
 
     private static final String STEP_RV = "stepRV";
+    //Stores state of RecyclerView
+    private Parcelable mRVState;
 
     private DetailContract.PresenterDetail mPresenterDetail;
 
@@ -48,6 +51,7 @@ public class DetailFragment extends Fragment implements DetailContract.ViewDetai
         super.onCreate(savedInstanceState);
         if (savedInstanceState!=null) {
             mRecipeId = savedInstanceState.getInt(RECIPE_ID);
+            mRVState = savedInstanceState.getParcelable(STEP_RV);
         } else if (getArguments() != null) {
             mRecipeId = getArguments().getInt(RECIPE_ID);
         }
@@ -98,6 +102,10 @@ public class DetailFragment extends Fragment implements DetailContract.ViewDetai
             }
             mIngredientsTV.setText(stringBuilder.toString());
             ((RecyclerViewAdapter) mStepRV.getAdapter()).swapSteps(aRecipe.mSteps);
+            //This is important as have to restore state HERE. Not in onRestoreState or fragments version.
+            if (mRVState!=null) {
+                mStepRV.getLayoutManager().onRestoreInstanceState(mRVState);
+            }
         } catch (Exception e) {
             Utils.logDebug("DetailFragment.setRecipe: "+e.getLocalizedMessage());
             Toast.makeText(getActivity(), getString(R.string.problem_setting_data), Toast.LENGTH_SHORT).show();
@@ -107,14 +115,6 @@ public class DetailFragment extends Fragment implements DetailContract.ViewDetai
     @Override
     public void setPresenter(DetailContract.PresenterDetail aPresenter) {
         mPresenterDetail=aPresenter;
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        if (savedInstanceState!=null) {
-            mStepRV.getLayoutManager().onRestoreInstanceState(savedInstanceState.getParcelable(STEP_RV));
-        }
     }
 
     @Override

@@ -119,7 +119,7 @@ public class StepDetailFragment extends Fragment implements StepDetailContract.V
         });
         mStepInstructionTV = view.findViewById(R.id.fragment_step_detail_instruction_tv);
         ImageButton mUpButton = view.findViewById(R.id.fragment_step_detail_up_button);
-        if (mUpButton!=null) {
+        if (mUpButton != null) {
             mUpButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View aView) {
@@ -128,7 +128,7 @@ public class StepDetailFragment extends Fragment implements StepDetailContract.V
             });
         }
         ImageButton mDownButton = view.findViewById(R.id.fragment_step_detail_down_button);
-        if (mDownButton!=null) {
+        if (mDownButton != null) {
             mDownButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View aView) {
@@ -152,6 +152,7 @@ public class StepDetailFragment extends Fragment implements StepDetailContract.V
         super.onPause();
         mPresenterStep.unSubscribe();
         if (mSimpleExoPlayerView != null && mSimpleExoPlayerView.getPlayer() != null) {
+            mPlayerPos=mSimpleExoPlayerView.getPlayer().getCurrentPosition();
             mSimpleExoPlayerView.getPlayer().release();
         }
     }
@@ -161,6 +162,7 @@ public class StepDetailFragment extends Fragment implements StepDetailContract.V
         Toast.makeText(getActivity(), getString(R.string.problem_finding_data), Toast.LENGTH_SHORT).show();
         showErrorIV();
     }
+
     private void showErrorIV() {
         mSimpleExoPlayerView.setVisibility(View.GONE);
         mErrorIV.setVisibility(View.VISIBLE);
@@ -170,7 +172,7 @@ public class StepDetailFragment extends Fragment implements StepDetailContract.V
     public void setRecipe(Recipe aRecipe) {
         try {
             Step step = aRecipe.mSteps.get(mStepId);
-            if (mStepInstructionTV!=null) {
+            if (mStepInstructionTV != null) {
                 mStepInstructionTV.setText(step.mDescription);
             }
             //Set view
@@ -205,12 +207,13 @@ public class StepDetailFragment extends Fragment implements StepDetailContract.V
                 mSimpleExoPlayerView.setDefaultArtwork(
                         BitmapFactory.decodeResource(getResources(), R.drawable.ic_image_white_48px));
             }
-            if (step.mVideoURL!=null&&!step.mVideoURL.equals("")) {
+            if (step.mVideoURL != null && !step.mVideoURL.equals("")) {
                 if (mSimpleExoPlayer == null) {
                     initializeMediaSession();
                     initializePlayer(Uri.parse(step.mVideoURL));
                 } else {
-                    mSimpleExoPlayer.setPlayWhenReady(true);
+                    initializePlayer(Uri.parse(step.mVideoURL));
+//                    mSimpleExoPlayer.setPlayWhenReady(true);
                 }
             } else {
                 mSimpleExoPlayerView.setUseArtwork(true);
@@ -232,6 +235,7 @@ public class StepDetailFragment extends Fragment implements StepDetailContract.V
             mSimpleExoPlayer = null;
         }
     }
+
     /**
      * Initializes the Media Session to be enabled with media buttons, transport controls, callbacks
      * and media controller.
@@ -264,34 +268,36 @@ public class StepDetailFragment extends Fragment implements StepDetailContract.V
         // Start the Media Session since the activity is active.
         mMediaSession.setActive(true);
     }
+
     /**
      * Initialize ExoPlayer.
+     *
      * @param aUrl The Url of the video to play
      */
     private void initializePlayer(Uri aUrl) throws Exception {
-        if (mSimpleExoPlayer == null) {
-            BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-            TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-            TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 
-            mSimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector);
-            mSimpleExoPlayerView.setPlayer(mSimpleExoPlayer);
+        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 
-            // Set the ExoPlayer.EventListener to this activity.
-            mSimpleExoPlayer.addListener(this);
+        mSimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(getActivity(), trackSelector);
+        mSimpleExoPlayerView.setPlayer(mSimpleExoPlayer);
 
-            // Produces DataSource instances through which media data is loaded.
-            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getActivity(),
-                    Util.getUserAgent(getActivity(), getString(R.string.app_name)));
+        // Set the ExoPlayer.EventListener to this activity.
+        mSimpleExoPlayer.addListener(this);
 
-            // This is the MediaSource representing the media to be played.
-            MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(aUrl);
+        // Produces DataSource instances through which media data is loaded.
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getActivity(),
+                Util.getUserAgent(getActivity(), getString(R.string.app_name)));
 
-            mSimpleExoPlayer.prepare(videoSource);
-            mSimpleExoPlayer.seekTo(mPlayerPos);
-            mSimpleExoPlayer.setPlayWhenReady(true);
-        }
+        // This is the MediaSource representing the media to be played.
+        MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                .createMediaSource(aUrl);
+        mSimpleExoPlayer.seekTo(mPlayerPos);
+        mSimpleExoPlayer.prepare(videoSource);
+
+        mSimpleExoPlayer.setPlayWhenReady(true);
+
     }
 
     @Override
@@ -353,6 +359,7 @@ public class StepDetailFragment extends Fragment implements StepDetailContract.V
     public void onSeekProcessed() {
 
     }
+
     /**
      * Media Session Callbacks, where all external clients control the player.
      */
@@ -387,7 +394,7 @@ public class StepDetailFragment extends Fragment implements StepDetailContract.V
         outState.putInt(RECIPE_ID, mRecipeId);
         outState.putInt(STEP_ID, mStepId);
         if (mSimpleExoPlayer != null) {
-            outState.putLong(PLAYER_POS, mSimpleExoPlayer.getCurrentPosition());
+            outState.putLong(PLAYER_POS, mPlayerPos);
         }
     }
 
